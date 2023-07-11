@@ -6,102 +6,57 @@
 ##    Thanks to Auburn Uni HPC administration for feedback to get this to work.
 ##    Some of the config has come from information here:
 ##-------------------- Parameters for running on EASLEY ----------------
-#SBATCH --job-name=Tidehunter_Test           # job name
+#SBATCH --job-name=BP_Tidehunter_Test           # job name
 #SBATCH --nodes=2                         # node(s) requried for job
 #SBATCH --ntasks=10                       # number of tasks across all nodes
 #SBATCH --partition=general                  # name of partition to submit job
 #SBATCH --time=10:00:00                    # Run time (D-HH:MM:SS)
-#SBATCH --output=job-%jTidehunter_Test3.out          # Output file. %j is replaced with job ID
-#SBATCH --error=job-%jTidehunter_Test3.err           # Error file. %j is replaced with job ID
+#SBATCH --output=job-%jBP_Tidehunter_Test2.out          # Output file. %j is replaced with job ID
+#SBATCH --error=job-%jBP_Tidehunter_Test2.err           # Error file. %j is replaced with job ID
 #SBATCH --mail-type=ALL                   # will send email for begin,end,fail
 #SBATCH --mail-user=bep0022@auburn.edu
 ##---------------------------------------------------------------------
 
-##Software to install
-Minimap2: /home/bep0022/bin/minimap2
-TideHunter: /home/bep0022/miniconda3/bin/TideHunter
-Porechop: /home/bep0022/repos/Porechop
-samtools: /home/bep0022/miniconda3/bin/samtools
-bedtools: /home/bep0022/miniconda3/bin/bedtools
-seqkit: /home/bep0022/bin/seqkit
+#### Load Python version 3.8.6 for use of Tidehunter and version 3.10.9 for use of Snakemake.
+  #### Load Tidehunter (case sensitive).
 
-##References
-#Must download
-starts: telo_start_position_WT_2kb.txt
-coverage: 2
-ref: /hosted/biosc/SchwartzLab/ReferenceGenomes/Anolis/Anolis.sagrei.Bahama__Draft2021/AnoSag2.1_gene_annotation_032122_CDS.fa
-outdir: /hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/snakemake_out
-reads: /hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/BaseCalled_Guppy10_GPU_HAC_230622/pass/fastq_runid_d236a8400e4b3d9b7f03775a8afc182c26ff215e_1_0.fastq
-telo_seq: TTAGGG
-threads: 48
+module load python/anaconda/3.8.6
 
-while :
-do
-  case "$1" in
-    -i | --in ) # input Tidehunter
-      in=$2
-      shift 2
-      ;;
-    -r | --reads ) # fastq
-      reads=$2
-      shift 2
-      ;;
-    -s | --sequence ) #telomere sequence (optional : defaults to TTAGGG)
-      sequence=$2
-      shift 2
-      ;;
-    -p | --seqkit_path ) #telomere sequence (optional : defaults to TTAGGG)
-      seqkit_path=$2
-      shift 2
-      ;;
-    -h | --help ) # help message
-      helpmsg=1
-      shift 1
-      ;;
-    *) break
-      ;;
-  esac
-done
+/tools/anacondapython-3.8.6/bin/TideHunter  -v
+1.5.4
 
-if [ -z $in ];then
-  errormsg="Error : Tidehunter output must be given"
-  helpmsg=1
-fi
-if [ -z $reads ];then
-  errormsg="Error : fastq must be given"
-  helpmsg=1
-fi
-if [ ! -z $helpmsg ];then
-  echo "./filter.sh [-i /Tidehunter/directory] [-s telomere_sequence [string]] /path/to/basecalled/sample
-  Filter Tidehunter fastq for reads with telomere and adapter seqence
-  ;-i/--in;;Tidehunter input file
-  ;-r/--reads;;Fastq
-  ;-s/--sequence;;Telomere sequence (default TTAGGG)
-  ;-p/--seqkit_path;;path to seqkit executable
-  ;-h/--help;;show help message and exit"|\
-    tr ";" "\t"
-  echo $errormsg
-  exit
-fi
-if [ -z $sequence ];then
-  sequence=TTAGGG
-fi
+module load python/anaconda/3.10.9
 
-mkdir -p ./tmp
-out=./tmp
+##----- Define variable for directories.
+  ## This (SOURCE) is where the directory of fastq data files.
 
-grep $sequence $in | cut -f1 | sed 's/^/@/' > ${out}/ID.tmp
-#num=$(grep $sequence $in | cut -f1 | wc -l)
-#echo $num reads with $sequence
+SOURCE=/hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/BaseCalled_Guppy10_GPU_HAC_230622/pass/fastq_runid_d236a8400e4b3d9b7f03775a8afc182c26ff215e_1_0.fastq
+OUTDIR=/hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/BP_Tidehunter
 
-##Generate a filtered .fastq with only reads with telomere
-awk 'NR==FNR{a[$0];next}$1 in a {x=NR+3}(NR<=x){print} ' ${out}/ID.tmp ${reads} > ${out}/filtered.fastq
-##Filter out reads < 5kb
-#awk 'BEGIN {FS = "\t" ; OFS = "\n"} {header = $0 ; getline seq ; getline qheader ; getline qseq ; if (length(seq) >= 5000) {print header, seq, qheader, qseq}}' < ${out}/telomere.fas$
-##Filter for reads with more than 10 As in the last 100 bp
-$seqkit_path grep -s -R -100:-1 -r -p AAAAAAAAAA ${out}/filtered.fastq > ${out}/As.fastq
-##Filter for reads with more then 10 Ts in the first 100 bp
-$seqkit_path grep -s -R 1:100 -r -p TTTTTTTTTT ${out}/filtered.fastq > ${out}/Ts.fastq
-##Combine the reads that are tailed
-cat ${out}/As.fastq ${out}/Ts.fastq
-rm -r $out
+##------ Make the directory for my results in my home folder
+   ## the -p will  Create intermediate directories as required.
+
+mkdir -p $OUTDIR
+
+# ###------- Pipeline Rules -------#####
+
+
+rule all:
+    input:
+	expand( OUTDIR + "/telomere_lengths.tsv")
+
+rule Tidehunter:
+    input:
+        reads = config["reads"]
+    output:
+	out = OUTDIR + "/cons.out"
+    params:
+	telo=config["telo_seq"],
+        threads = config["threads"],
+        tidehunter = config["TideHunter"]
+    message: """Running Tidehunter"""
+    run:
+        shell("{params.tidehunter} -t {params.threads} -f 2 {input.reads} > {output.out}")
+
+###--------------------------------------
+
