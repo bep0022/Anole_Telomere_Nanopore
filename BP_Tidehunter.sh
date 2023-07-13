@@ -22,8 +22,10 @@
 
 module load python/anaconda/3.8.6
 
-/tools/anacondapython-3.8.6/bin/TideHunter  -v
+#/tools/anacondapython-3.8.6/bin/TideHunter  -v
 1.5.4
+
+conda install -c bioconda tidehunter
 
 module load python/anaconda/3.10.9
 
@@ -60,3 +62,9 @@ rule Tidehunter:
 
 ###--------------------------------------
 
+##One Liner attempts
+#For one file
+TideHunter -f 2 /hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/BaseCalled_Guppy10_GPU_HAC_230622/pass/fastq_runid_d236a8400e4b3d9b7f03775a8afc182c26ff215e_1_0.fastq > BP_Tidehunter
+
+#For all of the .fastq.gz files in the pass folder
+TideHunter -f 2 /hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/BaseCalled_Guppy10_GPU_HAC_230622/pass/*fastq.gz > BP_Tidehunter_All
