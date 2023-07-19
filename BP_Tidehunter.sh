@@ -31,6 +31,5 @@
   #For all of the .fastq files-SUCCESSFUL-Test 12
 #TideHunter -f 2 /hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/BaseCalled_Guppy10_GPU_HAC_230622/pass/*.fastq > BP_Tidehunter_All.out
 
-##Running Tidehunter, adding parameters-UNSUCCESSFUL for now :)
-TideHunter --params.tidehunter TTAGGG -t --params.threads 48 -f 2 /hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/BaseCalled_Guppy10_GPU_HAC_230622/pass/*.fastq > BP_Tidehunter_All_params.out
-
+##Running Tidehunter, adding parameters-UNSUCCESSFUL(error message: TideHunter: invalid option -- 's')
+TideHunter -s TTAGGG -t 10 -f 2 /hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/BaseCalled_Guppy10_GPU_HAC_230622/pass/*.fastq > BP_Tidehunter_All_params.out
