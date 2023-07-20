@@ -11,8 +11,8 @@
 #SBATCH --ntasks=10                       # number of tasks across all nodes
 #SBATCH --partition=general                  # name of partition to submit job
 #SBATCH --time=10:00:00                    # Run time (D-HH:MM:SS)
-#SBATCH --output=job-%jBP_Tidehunter_All_Test14.out          # Output file. %j is replaced with job ID
-#SBATCH --error=job-%jBP_Tidehunter_All_Test14.err           # Error file. %j is replaced with job ID
+#SBATCH --output=job-%jBP_Tidehunter_All_Test20.out          # Output file. %j is replaced with job ID
+#SBATCH --error=job-%jBP_Tidehunter_All_Test20.err           # Error file. %j is replaced with job ID
 #SBATCH --mail-type=ALL                   # will send email for begin,end,fail
 #SBATCH --mail-user=bep0022@auburn.edu
 ##---------------------------------------------------------------------
@@ -31,5 +31,5 @@
   #For all of the .fastq files-SUCCESSFUL-Test 12
 #TideHunter -f 2 /hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/BaseCalled_Guppy10_GPU_HAC_230622/pass/*.fastq > BP_Tidehunter_All.out
 
-##Running Tidehunter, adding parameters-UNSUCCESSFUL(error message: TideHunter: invalid option -- 's')
-TideHunter -s TTAGGG -t 10 -f 2 /hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/BaseCalled_Guppy10_GPU_HAC_230622/pass/*.fastq > BP_Tidehunter_All_params.out
+##Adding parameters-SUCCESSFUL-Test 20
+TideHunter -u -t 10 -f 2 /hosted/biosc/SchwartzLab/Nanopore/AnoleEmbryoOldiesTelomere/BaseCalled_Guppy10_GPU_HAC_230622/pass/*.fastq > BP_Tidehunter_All_params.out
