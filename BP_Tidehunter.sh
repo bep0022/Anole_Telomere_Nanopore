@@ -18,10 +18,11 @@
 ##---------------------------------------------------------------------
 
 #### Load Python version 3.8.6 for use of Tidehunter and version 3.10.9 for use of Snakemake.
-  #### Load Tidehunter (case sensitive). The loading needs to be completed outside of the script, just included in here for accessibility.
+  #### Load Tidehunter (case sensitive). 
+  ##The loading needs to be completed outside of the script, just included in here for accessibility.
 
-  #module load python/anaconda/3.8.6
-  #conda install -c bioconda tidehunter
+  module load python/anaconda/3.8.6
+  conda install -c bioconda tidehunter
   #module load python/anaconda/3.10.9
 
 
