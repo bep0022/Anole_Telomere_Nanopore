@@ -6,13 +6,13 @@
 ##    Thanks to Gabrielle de la Silva, Dasia Simpson, and Auburn Uni HPC administration for feedback to get this to work.
 ##    Some of the config has come from information here: https://hackmd.io/@Miles/S12SKP115.
 ##-------------------- Parameters for running on EASLEY ----------------
-#SBATCH --job-name=Guppy10_SB           # job name
+#SBATCH --job-name=Guppy1_SB           # job name
 #SBATCH --nodes=1                       # node(s) requried for job
 #SBATCH --ntasks=10                     # number of tasks across all nodes
 #SBATCH --partition=gpu4                  # name of partition to submit job
 #SBATCH --time=5:00:00                   # Run time (D-HH:MM:SS)
-#SBATCH --output=job-%j_Guppy10.out          # Output file. %j is replaced with job ID
-#SBATCH --error=job-%j_Guppy10.err           # Error file. %j is replaced with job ID
+#SBATCH --output=job-%j_Guppy1.out          # Output file. %j is replaced with job ID
+#SBATCH --error=job-%j_Guppy1.err           # Error file. %j is replaced with job ID
 #SBATCH --mail-type=ALL              # will send email for begin,end,fail
 #SBATCH --mail-user=bep0022@auburn.edu
 #SBATCH --gres=gpu:tesla:1
