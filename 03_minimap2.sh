@@ -4,13 +4,13 @@
 #######################
 # Be sure to change these #SBATCH parameters as appropriate for YOUR job.
 #############################################################
-#SBATCH --job-name=Minimap2_Test           # job name
+#SBATCH --job-name=Minimap2_Test5           # job name
 #SBATCH --nodes=2                                                 #node(s) requried for job
 #SBATCH --ntasks=8                          # number of tasks across all nodes
 #SBATCH --partition=general                 # name of partition to submit job
 #SBATCH --time=05:00:00                     # Run time (D-HH:MM:SS)
-#SBATCH --output=job-%j_Minimap2_Test2.out          # Output file. %j is replaced with job ID
-#SBATCH --error=job-%j_Minimap2_Test2.err           # Error file. %j is replaced with job ID
+#SBATCH --output=job-%j_Minimap2_Test5.out          # Output file. %j is replaced with job ID
+#SBATCH --error=job-%j_Minimap2_Test5.err           # Error file. %j is replaced with job ID
 #SBATCH --mail-type=ALL              # will send email for begin,end,fail
 #SBATCH --mail-user=bep0022@auburn.edu
 #---------------
